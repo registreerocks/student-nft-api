@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  description: ''
+  version: 0.1.0
+  title: StudentNFT API
+tags:
+  - name: StudentNFT API
+    description: ''
+paths:
+  /student/register:
+    post:
+      tags:
+        - student
+      summary: register a new student
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.register_student
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+        description: Id of entry in identifying DB and corresponding URL
+        required: true
+        
+  /student/claim_ownership:
+    post:
+      tags:
+        - student
+      summary: create new student NFT and delete student from joining DB
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.claim_ownership
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimOwnership'
+        description: "Student's NFT id, identifying DB id, identifying DB URL, and address"
+        required: true
+        
+  /nft/update_id:
+    post:
+      tags:
+        - nft
+      summary: set a new identifying DB id within a student NFT
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.set_id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid input
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Set'
+        description: "Student's NFT id and new identifying DB id"
+        required: true
+
+  /nft/get_id:
+    get:
+      tags:
+        - nft
+      summary: get student NFT id given her identifying DB info or address
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.get_nft_id
+      parameters:
+        - in: query
+          name: ident_id
+          description: Id of entry in identifying DB
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: ident_url
+          description: URL of identifying DB
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: student_address
+          description: student blockchain address
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+        '409':
+          description: Conflict
+
+  /student/get_identifying_id:
+    get:
+      tags:
+        - student
+      summary: get identifying DB id and URL stored in NFT or joining DB
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.get_identifying_id
+      parameters:
+        - in: query
+          name: nft_id
+          description: NFT id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authorization error
+
+  /student/bulk_get_identifying_id:
+    post:
+      tags:
+        - student
+      summary: get identifying DB id and URL stored in NFT or joining DB for multiple students
+      description: ''
+      operationId: swagger_server.controllers.studentNFT_API_functions.get_identifying_ids
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Authentication error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkGetIds'
+        description: Array of NFT ids
+        required: true
+            
+servers:
+  - url: 'http://localhost:8000/v0.1'
+components:
+  schemas:
+    Register:
+      type: object
+      properties:
+        ident_id:
+          type: string
+        ident_url:
+          type: string
+      xml:
+        name: Register
+    ClaimOwnership:
+      type: object
+      properties:
+        nft_id:
+          type: string
+        ident_id:
+          type: string
+        ident_url:
+          type: string
+        student_address:
+          type: string
+      xml:
+        name: ClaimOwnership
+    Set:
+      type: object
+      properties:
+        nft_id:
+          type: string
+        new_ident_id:
+          type: string
+      xml:
+        name: Set
+    BulkGetIds:
+      type: object
+      properties:
+        nft_ids:
+          type: array
+          items:
+            type: string
+      xml:
+        name: BulkGetIds
