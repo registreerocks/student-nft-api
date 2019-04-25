@@ -1,3 +1,7 @@
 venv
 notebooks
 .vscode
+keys.txt
+mongodata
+__pycache__
+*.egg-info

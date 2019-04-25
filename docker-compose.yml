@@ -9,9 +9,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      RPC_HOST: 127.0.0.1
-      RPC_PORT: 7545
-      REGISTREE_CONTRACT: "0x78d3b8edc23d6a59a7aabfd78ee3fc88cf0f2448"
       AUTH0_DOMAIN: "registree.eu.auth0.com"
       API_IDENTIFIER: "https://registree.rocks/apis"
       ALGORITHMS: "['RS256']"

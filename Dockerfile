@@ -11,6 +11,7 @@ RUN  apt-get update -y && \
 # API
 RUN mkdir -p /usr/src/package
 COPY ./package /usr/src/package
+COPY keys.txt /usr/src/package/keys.txt
 WORKDIR /usr/src/package
 RUN pip install -e .
 
