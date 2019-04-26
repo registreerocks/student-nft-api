@@ -69,7 +69,7 @@ def _get_identifying_id(nft_id):
     registree_contract = W3.eth.contract(address=REGISTREE_ADDRESS, abi=registree_interface['abi'])
     try:
         student = registree_contract.functions.students(nft_id).call()
-        return {'id': student[0], 'db_url': student[1]}
+        return {'ident_id': student[0], 'ident_url': student[1]}
     except:
         return {'ERROR': 'Sender unauthorized'}, 401
 
