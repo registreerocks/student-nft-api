@@ -12,8 +12,8 @@ ADMIN = W3.eth.account.privateKeyToAccount(private_key)
 REGISTREE_ADDRESS = Web3.toChecksumAddress(registree_address)
 
 CLIENT = MongoClient('mongodb://mongodb:27017/')
-DB = CLIENT.joining_database
-JOIN = DB.joining_collection
+DB = CLIENT.database
+JOIN = DB.joining_db
 
 # inject the poa compatibility middleware to the innermost layer
 W3.middleware_stack.inject(geth_poa_middleware, layer=0)
