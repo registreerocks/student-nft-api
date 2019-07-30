@@ -1,6 +1,4 @@
+from os import environ as env
 
-with open('keys.txt', 'r') as f:
-    keys = f.read().splitlines()
-
-infura_key = keys[0]
-private_key = keys[1]
+infura_key = env.get("INFURA_KEY")
+private_key = env.get("PRIVATE_KEY")
