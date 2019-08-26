@@ -13,6 +13,7 @@ API_IDENTIFIER = env.get("API_IDENTIFIER")
 ALGORITHMS = eval(env.get("ALGORITHMS"))
 UPORT_ISSUER = env.get("UPORT_ISSUER")
 UPORT_VALIDATION_URL = env.get("UPORT_VALIDATION_URL")
+VALIDATION = env.get("VALIDATION", True)
 
 
 def get_token_auth_header():
@@ -65,49 +66,52 @@ def requires_auth(f):
     """
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = get_token_auth_header()
-        jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
-        jwks = json.loads(jsonurl.read())
-        try:
-            unverified_header = jwt.get_unverified_header(token)
-        except jwt.JWTError:
-            return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
-        if unverified_header["alg"] == "HS256":
-            return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
-        elif unverified_header["alg"] == "ES256K":
-            response = requests.get(UPORT_VALIDATION_URL, data={'jwt': token, 'did': 'did:uport:' + UPORT_ISSUER})
-            response_body = json.loads(response.text)
-            if response_body.get('status') == 'SUCCESS':
-                return f(*args, **kwargs)
-            return {"ERROR": response_body.get('response')}, 401
-        else:
-            rsa_key = {}
-            for key in jwks["keys"]:
-                if key["kid"] == unverified_header["kid"]:
-                    rsa_key = {
-                        "kty": key["kty"],
-                        "kid": key["kid"],
-                        "use": key["use"],
-                        "n": key["n"],
-                        "e": key["e"]
-                    }
-            if rsa_key:
-                try:
-                    payload = jwt.decode(
-                        token,
-                        rsa_key,
-                        algorithms=ALGORITHMS,
-                        audience=API_IDENTIFIER,
-                        issuer="https://"+AUTH0_DOMAIN+"/"
-                    )
-                except jwt.ExpiredSignatureError:
-                    return {"ERROR": "token is expired"}, 401
-                except jwt.JWTClaimsError:
-                    return {"ERROR": "incorrect claims, please check the audience and issuer"}, 401
-                except Exception:
-                    return {"ERROR": "Unable to parse authentication token."}, 401
+        if VALIDATION:
+            token = get_token_auth_header()
+            jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
+            jwks = json.loads(jsonurl.read())
+            try:
+                unverified_header = jwt.get_unverified_header(token)
+            except jwt.JWTError:
+                return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
+            if unverified_header["alg"] == "HS256":
+                return {"ERROR": "Invalid header. Use an RS256 signed JWT Access Token"}, 401
+            elif unverified_header["alg"] == "ES256K":
+                response = requests.get(UPORT_VALIDATION_URL, data={'jwt': token, 'did': 'did:uport:' + UPORT_ISSUER})
+                response_body = json.loads(response.text)
+                if response_body.get('status') == 'SUCCESS':
+                    return f(*args, **kwargs)
+                return {"ERROR": response_body.get('response')}, 401
+            else:
+                rsa_key = {}
+                for key in jwks["keys"]:
+                    if key["kid"] == unverified_header["kid"]:
+                        rsa_key = {
+                            "kty": key["kty"],
+                            "kid": key["kid"],
+                            "use": key["use"],
+                            "n": key["n"],
+                            "e": key["e"]
+                        }
+                if rsa_key:
+                    try:
+                        payload = jwt.decode(
+                            token,
+                            rsa_key,
+                            algorithms=ALGORITHMS,
+                            audience=API_IDENTIFIER,
+                            issuer="https://"+AUTH0_DOMAIN+"/"
+                        )
+                    except jwt.ExpiredSignatureError:
+                        return {"ERROR": "token is expired"}, 401
+                    except jwt.JWTClaimsError:
+                        return {"ERROR": "incorrect claims, please check the audience and issuer"}, 401
+                    except Exception:
+                        return {"ERROR": "Unable to parse authentication token."}, 401
 
-                _request_ctx_stack.top.current_user = payload
-                return f(*args, **kwargs)
-            return {"ERROR": "Unable to find appropriate key"}, 401
+                    _request_ctx_stack.top.current_user = payload
+                    return f(*args, **kwargs)
+                return {"ERROR": "Unable to find appropriate key"}, 401
+        else:
+            return f(*args, **kwargs)
     return decorated
