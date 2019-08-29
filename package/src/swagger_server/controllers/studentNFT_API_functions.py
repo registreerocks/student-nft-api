@@ -5,22 +5,22 @@ from .transaction_functions import (_claim_ownership, _compute_nft_id,
 
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def register_student(body):
     return _register_student(body.get('ident_id'), body.get('ident_url'))
 
 @requires_auth
-@requires_scope('student', 'registree')
+@requires_scope('student')
 def claim_ownership(body):
     return _claim_ownership(body.get('nft_id'), body.get('ident_id'), body.get('ident_url'), body.get('student_address'))
 
 @requires_auth
-@requires_scope('admin', 'registree')
+@requires_scope('admin')
 def set_id(body):
     return _set_id(body.get('nft_id'), body.get('new_ident_id'))
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def get_nft_id(**kwargs):
     if 'student_address' in kwargs:
         return _get_nft_id(kwargs['student_address'])
@@ -30,11 +30,11 @@ def get_nft_id(**kwargs):
         return {"ERROR": "Wrong parameter combination. Provide student_address or ident_id and ident_url."}, 409
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'student', 'registree')
+@requires_scope('admin', 'lecturer', 'student')
 def get_identifying_id(nft_id):
     return _get_identifying_id(nft_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer', 'registree')
+@requires_scope('admin', 'lecturer')
 def get_identifying_ids(body):
     return _get_identifying_ids(body.get('nft_ids'))
