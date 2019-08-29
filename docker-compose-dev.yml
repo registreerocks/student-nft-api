@@ -7,11 +7,13 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8002:8000"
     environment:
       AUTH0_DOMAIN: "registree.eu.auth0.com"
       API_IDENTIFIER: "https://registree.rocks/apis"
       ALGORITHMS: "['RS256']"
+      INFURA_KEY: "your infura API key"
+      PRIVATE_KEY: "your Ethereum private key"
     depends_on:
       - mongodb
     networks:

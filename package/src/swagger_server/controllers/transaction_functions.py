@@ -12,8 +12,8 @@ ADMIN = W3.eth.account.privateKeyToAccount(private_key)
 REGISTREE_ADDRESS = Web3.toChecksumAddress(registree_address)
 
 CLIENT = MongoClient('mongodb://mongodb:27017/')
-DB = CLIENT.joining_database
-JOIN = DB.joining_collection
+DB = CLIENT.database
+JOIN = DB.joining_db
 
 # inject the poa compatibility middleware to the innermost layer
 W3.middleware_stack.inject(geth_poa_middleware, layer=0)
@@ -69,7 +69,10 @@ def _get_identifying_id(nft_id):
     registree_contract = W3.eth.contract(address=REGISTREE_ADDRESS, abi=registree_interface['abi'])
     try:
         student = registree_contract.functions.students(nft_id).call()
-        return {'ident_id': student[0], 'ident_url': student[1]}
+        if student[0]:
+            return {'ident_id': student[0], 'ident_url': student[1]}
+        else:
+            return JOIN.find_one({'_id': nft_id})
     except:
         return {'ERROR': 'Sender unauthorized'}, 401
 
