@@ -35,6 +35,6 @@ def get_identifying_id(nft_id):
     return _get_identifying_id(nft_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer')
+@requires_scope('admin', 'lecturer', 'registree')
 def get_identifying_ids(body):
     return _get_identifying_ids(body.get('nft_ids'))
