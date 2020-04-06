@@ -1,0 +1,8 @@
+connexion[swagger-ui]
+pymongo
+flask_cors
+web3==4.9.1
+python-dotenv
+python-jose-cryptodome
+pytest
+mock
