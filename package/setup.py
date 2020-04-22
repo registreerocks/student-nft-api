@@ -11,5 +11,15 @@ setup(
    packages=find_packages('src'),
    package_data={'swagger_server': ['swagger/swagger.yaml']},
 
-   install_requires=['connexion[swagger-ui]', 'pymongo','flask_cors', 'web3==4.9.1', 'python-dotenv', 'python-jose-cryptodome', 'pytest', 'mock'],
+   install_requires=[
+      'connexion[swagger-ui]', 
+      'pymongo',
+      'flask_cors', 
+      'web3==4.9.1',
+      'registree-auth @ git+git://github.com/registreerocks/registree-auth.git'
+   ],
+   test_require = [
+      'pytest', 
+      'mock'
+   ],
 )
