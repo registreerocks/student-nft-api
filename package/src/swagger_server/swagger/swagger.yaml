@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: ''
-  version: 1.0.0
+  version: 1.1.0
   title: StudentNFT API
 tags:
   - name: StudentNFT API
@@ -144,7 +144,7 @@ paths:
         required: true
             
 servers:
-  - url: 'http://localhost:8000/v0.1'
+  - url: 'http://localhost:8000'
 components:
   schemas:
     Register:
