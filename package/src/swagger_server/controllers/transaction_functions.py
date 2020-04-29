@@ -1,19 +1,14 @@
 import os
 
-from pymongo import MongoClient
 from web3 import HTTPProvider, Web3
 from web3.middleware import geth_poa_middleware
 
 from .contracts import registree_interface, registree_address
-from .keys import infura_key, private_key
+from .global_vars import JOIN, INFURA_KEY, PRIVATE_KEY
 
-W3 = Web3(HTTPProvider('https://rinkeby.infura.io/v3/' + infura_key))
-ADMIN = W3.eth.account.privateKeyToAccount(private_key)
+W3 = Web3(HTTPProvider('https://rinkeby.infura.io/v3/' + INFURA_KEY))
+ADMIN = W3.eth.account.privateKeyToAccount(PRIVATE_KEY)
 REGISTREE_ADDRESS = Web3.toChecksumAddress(registree_address)
-
-CLIENT = MongoClient('mongodb://mongodb:27017/')
-DB = CLIENT.database
-JOIN = DB.joining_db
 
 # inject the poa compatibility middleware to the innermost layer
 W3.middleware_stack.inject(geth_poa_middleware, layer=0)

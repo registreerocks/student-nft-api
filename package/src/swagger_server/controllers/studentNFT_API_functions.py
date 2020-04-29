@@ -1,4 +1,4 @@
-from .authentication import requires_auth, requires_scope
+from registree_auth import requires_auth, requires_scope
 from .transaction_functions import (_claim_ownership, _compute_nft_id,
                                     _get_identifying_id, _get_identifying_ids,
                                     _get_nft_id, _register_student, _set_id)
@@ -35,6 +35,6 @@ def get_identifying_id(nft_id):
     return _get_identifying_id(nft_id)
 
 @requires_auth
-@requires_scope('admin', 'lecturer')
+@requires_scope('admin', 'lecturer', 'registree')
 def get_identifying_ids(body):
     return _get_identifying_ids(body.get('nft_ids'))
