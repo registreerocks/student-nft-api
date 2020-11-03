@@ -5,9 +5,9 @@ services:
   studentnft_api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-dev
     ports:
-      - "8002:8000"
+      - "8000:8000"
     env_file:
       - api.env
     depends_on:
