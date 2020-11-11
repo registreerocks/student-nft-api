@@ -84,6 +84,12 @@ paths:
           schema:
             type: string
         - in: query
+          name: ident_url
+          description: URL of identifying DB
+          required: false
+          schema:
+            type: string
+        - in: query
           name: student_address
           description: student blockchain address
           required: false
@@ -145,6 +151,8 @@ components:
       type: object
       properties:
         ident_id:
+          type: string
+        ident_url:
           type: string
       xml:
         name: Register
