@@ -15,7 +15,7 @@ setup(
       'connexion[swagger-ui]', 
       'pymongo',
       'flask_cors', 
-      'web3==4.9.1',
+      'web3',
       'registree-auth @ git+git://github.com/registreerocks/registree-auth.git'
    ],
    test_require = [
