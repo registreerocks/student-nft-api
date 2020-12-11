@@ -2,6 +2,7 @@ from registree_auth import requires_auth, requires_scope
 from .transaction_functions import (_claim_ownership, _compute_nft_id,
                                     _get_identifying_id, _get_identifying_ids,
                                     _get_nft_id, _register_student, _set_id)
+from .health import _health_check
 
 
 @requires_auth
@@ -38,3 +39,6 @@ def get_identifying_id(nft_id):
 @requires_scope('admin', 'lecturer', 'registree')
 def get_identifying_ids(body):
     return _get_identifying_ids(body.get('nft_ids'))
+
+def health_check():
+    return _health_check()

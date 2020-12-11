@@ -7,6 +7,19 @@ tags:
   - name: StudentNFT API
     description: ''
 paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: health endpoint
+      operationId: swagger_server.controllers.studentNFT_API_functions.health_check
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal error
+        "503":
+          description: Mongo service unavailable
   /student/register:
     post:
       tags:
