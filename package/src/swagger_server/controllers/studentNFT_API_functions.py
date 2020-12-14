@@ -4,7 +4,6 @@ from .transaction_functions import (_get_identifying_id, _get_identifying_ids,
 from .health import _health_check
 
 
-
 @requires_auth
 @requires_scope('admin')
 def register_student(body):
