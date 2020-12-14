@@ -16,7 +16,7 @@ def get_nft_id(**kwargs):
     elif all (k in kwargs for k in ('ident_id','ident_url')):
         return _get_nft_id(kwargs['ident_id'])
     else:
-        return {"ERROR": "NFT ID not found."}, 404
+        return {"ERROR": "Input parameters wrong"}, 409
 
 @requires_auth
 @requires_scope('admin', 'lecturer', 'student')

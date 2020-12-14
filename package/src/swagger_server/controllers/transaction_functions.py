@@ -18,7 +18,8 @@ def _register_student(ident_id, ident_url):
     return _id
 
 def _get_nft_id(ident_id):
-    return JOIN.find_one({'ident_id': ident_id})
+    link = JOIN.find_one({'ident_id': ident_id})
+    return link['_id']
 
 def _get_identifying_id(nft_id):
     return JOIN.find_one({'_id': nft_id})
