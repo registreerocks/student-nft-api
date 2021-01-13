@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
    name='studentNFT_API',
-   version='1.1.1',
+   version='1.2.0',
    maintainer='Sabine Bertram',
    maintainer_email='sabine.bertram@mailbox.org',
    package_dir={'': 'src'},
@@ -15,7 +15,7 @@ setup(
       'connexion[swagger-ui]', 
       'pymongo',
       'flask_cors', 
-      'web3==4.9.1',
+      'web3',
       'registree-auth @ git+git://github.com/registreerocks/registree-auth.git'
    ],
    test_require = [

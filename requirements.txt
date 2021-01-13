@@ -1,7 +1,7 @@
 connexion[swagger-ui]
 pymongo
 flask_cors
-web3==4.9.1
+web3
 pytest
 mock
 git+git://github.com/registreerocks/registree-auth.git
